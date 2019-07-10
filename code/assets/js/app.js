@@ -2,10 +2,8 @@
 
 // Section 1: Pre-Data Setup
 // ===========================
-// Before we code any data visualizations,
-// we need to at least set up the width, height and margins of the graph.
-// Note: I also added room for label text as well as text padding,
-// though not all graphs will need those specifications.
+// set up the width, height and margins of the graph.
+
 
 // Grab the width of the containing box
 var width = parseInt(d3.select("#scatter").style("width"));
@@ -37,22 +35,21 @@ var svg = d3
 var circRadius;
 function crGet() {
   if (width <= 530) {
-    circRadius = 5;
+    circRadius = 8;
   }
   else {
-    circRadius = 10;
+    circRadius = 12;
   }
 }
 crGet();
 
-// The Labels for our Axes
 
 // A) Bottom Axis
 // ==============
 
-// We create a group element to nest our bottom axes labels.
+// create a group element to nest our bottom axes labels.
 svg.append("g").attr("class", "xText");
-// xText will allows us to select the group without excess code.
+
 var xText = d3.select(".xText");
 
 // We give xText a transform property that places it at the bottom of the chart.
@@ -78,7 +75,7 @@ xText
   .attr("data-name", "poverty")
   .attr("data-axis", "x")
   .attr("class", "aText active x")
-  .text("In Poverty (%)");
+  .text("Poverty (%)");
 // 2. Age
 xText
   .append("text")
@@ -94,22 +91,22 @@ xText
   .attr("data-name", "income")
   .attr("data-axis", "x")
   .attr("class", "aText inactive x")
-  .text("Household Income (Median)");
+  .text("Household Income $(Median)");
 
 // B) Left Axis
 // ============
 
-// Specifying the variables like this allows us to make our transform attributes more readable.
+
 var leftTextX = margin + tPadLeft;
 var leftTextY = (height + labelArea) / 2 - labelArea;
 
-// We add a second label group, this time for the axis left of the chart.
+// We add a second label group for the axis left of the chart.
 svg.append("g").attr("class", "yText");
 
-// yText will allows us to select the group without excess code.
+
 var yText = d3.select(".yText");
 
-// Like before, we nest the group's transform attr in a function
+// we nest the group's transform attr in a function
 // to make changing it on window change an easy operation.
 function yTextRefresh() {
   yText.attr(
@@ -145,7 +142,7 @@ yText
   .attr("data-name", "healthcare")
   .attr("data-axis", "y")
   .attr("class", "aText inactive y")
-  .text("Lacks Healthcare (%)");
+  .text("Lack Healthcare (%)");
 
 // 2. Import our .csv file.
 // ========================
@@ -153,7 +150,7 @@ yText
 // and measurements from health risks obtained
 // by the Behavioral Risk Factor Surveillance System.
 
-// Import our CSV data with d3's .csv import method.
+
 d3.csv("assets/data/data.csv").then(function(data) {
   // Visualize the data
   visualize(data);
@@ -161,18 +158,18 @@ d3.csv("assets/data/data.csv").then(function(data) {
 
 // 3. Create our visualization function
 // ====================================
-// We called a "visualize" function on the data obtained with d3's .csv method.
+// We define a "visualize" function on the data obtained with d3's .csv method.
 // This function handles the visual manipulation of all elements dependent on the data.
 function visualize(theData) {
   // PART 1: Essential Local Variables and Functions
   // =================================
   // curX and curY will determine what data gets represented in each axis.
-  // We designate our defaults here, which carry the same names
+  // designate our defaults here, which carry the same names
   // as the headings in their matching .csv data file.
   var curX = "poverty";
   var curY = "obesity";
 
-  // We also save empty variables for our the min and max values of x and y.
+  // also save empty variables for our the min and max values of x and y.
   // this will allow us to alter the values in functions and remove repetitious code.
   var xMin;
   var xMax;
@@ -212,10 +209,8 @@ function visualize(theData) {
   // Call the toolTip function.
   svg.call(toolTip);
 
-  // PART 2: D.R.Y!
-  // ==============
-  // These functions remove some repitition from later code.
-  // This will be more obvious in parts 3 and 4.
+  // PART 2:
+
 
   // a. change the min and max for x
   function xMinMax() {
@@ -257,7 +252,7 @@ function visualize(theData) {
     clickedText.classed("inactive", false).classed("active", true);
   }
 
-  // Part 3: Instantiate the Scatter Plot
+  // Part 3: Instantiate Scatter Plot
   // ====================================
   // This will add the first placement of our data and axes to the scatter plot.
 
@@ -311,7 +306,7 @@ function visualize(theData) {
     .attr("class", "yAxis")
     .attr("transform", "translate(" + (margin + labelArea) + ", 0)");
 
-  // Now let's make a grouping for our dots and their labels.
+  // let's make a grouping for our dots and their labels.
   var theCircles = svg.selectAll("g theCircles").data(theData).enter();
 
   // We append the circles for each row of data (or each state, in this case).
